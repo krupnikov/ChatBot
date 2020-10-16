@@ -4,11 +4,11 @@ BOT_CONFIG = {
     'intents': {
         'hello': {
             'examples': ['Привет', 'Здравствуйте', 'Добрый день'],
-            'responses': []
+            'responses': ['Привет, человек', 'Здраствуйте!', 'Шалом']
         },
         'bye': {
             'examples': ['Bye-bye', 'До свидания', 'Увидимся'],
-            'responses': ['Прощай', '']
+            'responses': ['Прощай', 'Приходи еще', 'Увидимся']
         },
         'failure_phrase': [
             'Я не понял',
@@ -21,21 +21,22 @@ BOT_CONFIG = {
 
 
 def get_generative_answer():
-    return 'Hello'  # TODO on 3th day
+    return ''  # TODO on 3th day
 
 
 def get_intent(question):
-    pass
+    for intent, intent_value in BOT_CONFIG['intents'].items():
+        # print(intent, intent_value['examples'])
+        for example in intent_value['examples']:
+            # print(intent, example)
+            if example == question:
+                return intent
+    return 'Hello'
 
 
 def get_answer_by_intent(intent):
-    phrases = [
-        'Приветсвую',
-        'Добрый день',
-        'Добрый вечер',
-        'Доброе утро'
-    ]
-
+    phrases = BOT_CONFIG['intents'][intent]['responses']
+    return random.choice(phrases)
 
 def get_failure_phrase():
     phrases = BOT_CONFIG['failure_phrases']
@@ -61,3 +62,5 @@ def bot(question):
 
     # Dummy answer
     return get_failure_phrase()
+
+print(bot(input(str())))
