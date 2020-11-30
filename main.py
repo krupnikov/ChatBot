@@ -1,4 +1,6 @@
 import random
+import nltk
+
 
 BOT_CONFIG = {
     'intents': {
@@ -30,6 +32,8 @@ def get_intent(question):
         for example in intent_value['examples']:
             # print(intent, example)
             if example == question:
+                d = nltk.edit_distance('Добрый день', 'Добрый вечер')
+                diff = d / len('Добрый день')
                 return intent
     return 'Hello'
 
@@ -37,6 +41,7 @@ def get_intent(question):
 def get_answer_by_intent(intent):
     phrases = BOT_CONFIG['intents'][intent]['responses']
     return random.choice(phrases)
+
 
 def get_failure_phrase():
     phrases = BOT_CONFIG['failure_phrases']
@@ -56,11 +61,12 @@ def bot(question):
 
     #
     # Generating model
-    answer = get_generative_answer(question)
+    answer = get_generative_answer()
     if answer:
         return answer
 
     # Dummy answer
     return get_failure_phrase()
+
 
 print(bot(input(str())))
